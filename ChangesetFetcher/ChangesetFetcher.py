@@ -40,6 +40,7 @@ class ChangesetFetcher:
                 self.sqlConnector.insert_changeset(changeset)
 
 
+
 def main() -> None:
     cf = ChangesetFetcher()
     cf.fetch_changesets()
