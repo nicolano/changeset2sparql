@@ -50,5 +50,8 @@ def get_value_from_element_attribute(element: Element, key: str) -> Optional[str
         return None
 
 
-def get_date_time_from_string(date_time_string: str) -> datetime.datetime:
-    return datetime.datetime.strptime(date_time_string, "%Y-%m-%dT%H:%M:%S%z")
+def get_date_time_from_string(date_time_string: str) -> Optional[datetime.datetime]:
+    if date_time_string is None:
+        return None
+    else:
+        return datetime.datetime.strptime(date_time_string, "%Y-%m-%dT%H:%M:%S%z")
