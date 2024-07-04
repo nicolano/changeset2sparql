@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -7,13 +10,14 @@ class Changeset:
     A OSM Changeset (https://wiki.openstreetmap.org/wiki/Changeset).
     """
     id: int
-    created_at: str
-    closed_at: str
+    created_at: datetime
+    closed_at: Optional[datetime]  # Is null if changeset is still open
+    open: bool
     user: str
-    user_id: int
+    uid: int
     min_lat: float
     min_lon: float
     max_lat: float
     max_lon: float
     comments_count: int
-    changes_count: int
+    num_changes: int
