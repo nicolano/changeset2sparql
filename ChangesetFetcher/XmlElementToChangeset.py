@@ -33,10 +33,10 @@ def map_element_to_changeset(element: Element) -> Changeset:
         open=bool(get_value_from_element_attribute(element, KEY_OPEN)),
         user=get_value_from_element_attribute(element, KEY_USER),
         uid=int(get_value_from_element_attribute(element, KEY_UID)),
-        min_lat=float(get_value_from_element_attribute(element, KEY_MIN_LAT)),
-        min_lon=float(get_value_from_element_attribute(element, KEY_MIN_LOT)),
-        max_lat=float(get_value_from_element_attribute(element, KEY_MAX_LAT)),
-        max_lon=float(get_value_from_element_attribute(element, KEY_MAX_LON)),
+        min_lat=get_float_from_nullable_string(get_value_from_element_attribute(element, KEY_MIN_LAT)),
+        min_lon=get_float_from_nullable_string(get_value_from_element_attribute(element, KEY_MIN_LOT)),
+        max_lat=get_float_from_nullable_string(get_value_from_element_attribute(element, KEY_MAX_LAT)),
+        max_lon=get_float_from_nullable_string(get_value_from_element_attribute(element, KEY_MAX_LON)),
         comments_count=int(get_value_from_element_attribute(element, KEY_COMMENTS_COUNT)),
         num_changes=int(get_value_from_element_attribute(element, KEY_NUM_CHANGES)),
     )
@@ -46,7 +46,7 @@ def get_value_from_element_attribute(element: Element, key: str) -> Optional[str
     try:
         return element.attrib[key]
     except KeyError:
-        logging.warning(f"Could not find attribute with key: {key}")
+        logging.debug(f"Could not find attribute with key: {key}")
         return None
 
 
@@ -55,3 +55,10 @@ def get_date_time_from_string(date_time_string: str) -> Optional[datetime.dateti
         return None
     else:
         return datetime.datetime.strptime(date_time_string, "%Y-%m-%dT%H:%M:%S%z")
+
+
+def get_float_from_nullable_string(nullable_string: str) -> Optional[float]:
+    if nullable_string is None:
+        return None
+    else:
+        return float(nullable_string)
