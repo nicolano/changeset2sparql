@@ -15,9 +15,9 @@ class Changeset:
     open: bool
     user: str
     uid: int
-    min_lat: float
-    min_lon: float
-    max_lat: float
-    max_lon: float
+    min_lat: Optional[float]
+    max_lat: Optional[float]
+    min_lon: Optional[float]
+    max_lon: Optional[float]
     comments_count: int
     num_changes: int
