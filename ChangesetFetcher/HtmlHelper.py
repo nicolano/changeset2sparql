@@ -1,11 +1,41 @@
+from datetime import datetime
 from posixpath import dirname
 from urllib.parse import urlparse
 from urllib.request import urlopen
 import validators.url
 
 from bs4 import BeautifulSoup
+from Constants import DATETIME_FORMAT
 
 CHANGESETS_FOLDER_FILE_EXTENSION = ".osm.gz"
+CHANGESETS_STATE_FILE_EXTENSION = ".state.txt"
+
+
+def get_date_for_changeset_batch(url: str) -> datetime:
+    """
+    Returns the date of the changeset batch. The batches state file contains the date of the last run and the
+    sequence number.
+    The state file has the following format:
+
+        ---
+        last_run: 2024-07-05 08:25:24.938066000 +00:00
+        sequence: 6080606
+
+    """
+    page = urlopen(url.replace(CHANGESETS_FOLDER_FILE_EXTENSION, CHANGESETS_STATE_FILE_EXTENSION))
+    html = page.read().decode('utf-8')
+
+    # Extract the date from the state file
+    line: str = html.splitlines()[1]
+    date_string = line.removeprefix("last_run: ")
+    date_time, microsecondes_and_offset = date_string.split(".")
+    microsecondes, offset = microsecondes_and_offset.split(" ")
+
+    #remove decimals from micro seconds because strptime can only handle 6 decimal places
+    microsecondes_shortend = microsecondes[:-3]
+    date_string = date_time + "." + microsecondes_shortend + " " + offset
+
+    return datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S.%f %z')
 
 
 def get_all_numeric_directories(url: str) -> list[str]:

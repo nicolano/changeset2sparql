@@ -5,6 +5,7 @@ from xml.etree.ElementTree import Element
 from typing import Optional
 
 from Changeset import Changeset
+from Constants import DATETIME_FORMAT
 
 KEY_ID = "id"
 KEY_CREATED_AT = "created_at"
@@ -17,7 +18,7 @@ KEY_MIN_LOT = "min_lon"
 KEY_MAX_LAT = "max_lat"
 KEY_MAX_LON = "max_lon"
 KEY_COMMENTS_COUNT = "comments_count"
-KEY_NUM_CHANGES = "num_changes"
+KEY_NUM_CHANGES = "changes_count"
 
 
 def map_element_to_changeset(element: Element) -> Changeset:
@@ -38,7 +39,7 @@ def map_element_to_changeset(element: Element) -> Changeset:
         max_lat=get_float_from_nullable_string(get_value_from_element_attribute(element, KEY_MAX_LAT)),
         max_lon=get_float_from_nullable_string(get_value_from_element_attribute(element, KEY_MAX_LON)),
         comments_count=int(get_value_from_element_attribute(element, KEY_COMMENTS_COUNT)),
-        num_changes=int(get_value_from_element_attribute(element, KEY_NUM_CHANGES)),
+        changes_count=int(get_value_from_element_attribute(element, KEY_NUM_CHANGES)),
     )
 
 
@@ -54,7 +55,7 @@ def get_date_time_from_string(date_time_string: str) -> Optional[datetime.dateti
     if date_time_string is None:
         return None
     else:
-        return datetime.datetime.strptime(date_time_string, "%Y-%m-%dT%H:%M:%S%z")
+        return datetime.datetime.strptime(date_time_string, DATETIME_FORMAT)
 
 
 def get_float_from_nullable_string(nullable_string: str) -> Optional[float]:

@@ -69,25 +69,15 @@ class SQLiteConnector:
         else:
             closet_at: str = changeset.closed_at.strftime(SQL_TIME_FORMAT) or None
 
+        params = (changeset.id, created_at, closet_at, changeset.user, changeset.uid, changeset.min_lat,
+                  changeset.min_lon, changeset.max_lat, changeset.max_lon, changeset.comments_count,
+                  changeset.changes_count)
         self.__cursor.execute(
-            f"""INSERT OR IGNORE  INTO {TABLE_NAME_CHANGESETS} VALUES (
-            {changeset.id},
-            \'{created_at}\',
-            \'{closet_at}\',
-            \'{changeset.user}\',
-            {changeset.uid},
-            {changeset.min_lat},
-            {changeset.min_lon},
-            {changeset.max_lat},
-            {changeset.max_lon},
-            {changeset.comments_count},
-            {changeset.num_changes}
-            );
-            """
+            f"INSERT OR IGNORE INTO {TABLE_NAME_CHANGESETS} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", params
         )
         self.__connection.commit()
-        logging.info(
-            f"""Either Inserted changeset with id {changeset.id} into table {TABLE_NAME_CHANGESETS} or there 
-                already exists changeset with id {changeset.id}
-            """
-        )
+        # logging.info(
+        #     f"""Either Inserted changeset with id {changeset.id} into table {TABLE_NAME_CHANGESETS} or there
+        #         already exists changeset with id {changeset.id}
+        #     """
+        # )

@@ -7,11 +7,11 @@ from typing import Optional
 @dataclass
 class Changeset:
     """
-    A OSM Changeset (https://wiki.openstreetmap.org/wiki/Changeset).
+    An object representing an OSM changeset (see https://wiki.openstreetmap.org/wiki/Changeset)
     """
     id: int
     created_at: datetime
-    closed_at: Optional[datetime]  # Is null if changeset is still open
+    closed_at: Optional[datetime]  # Is null if changeset is open
     open: bool
     user: str
     uid: int
@@ -20,4 +20,4 @@ class Changeset:
     min_lon: Optional[float]
     max_lon: Optional[float]
     comments_count: int
-    num_changes: int
+    changes_count: int
